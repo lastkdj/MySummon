@@ -1,0 +1,30 @@
+## Interface: 11507, 20504, 30403, 40402
+## Title: |cff9be85aSummon|r |cffa366f5Network|r
+## Notes: Multi-city Warlock summoning network: shared queues, assignments, trade tracking. Free; customers need no addon.
+## Author: Ricardo
+## Version: 1.0.0
+## SavedVariables: SummonNetworkDB
+## SavedVariablesPerCharacter: SummonNetworkCharDB
+## IconTexture: Interface\Icons\Spell_Shadow_Twilight
+## X-Category: Economy
+
+Locale\enUS.lua
+Util.lua
+Parse.lua
+Protocol.lua
+Queue.lua
+Engine.lua
+Ads.lua
+Stats.lua
+Config.lua
+Compat.lua
+Groups.lua
+Net.lua
+Whispers.lua
+Trade.lua
+UI\Kit.lua
+Summon.lua
+UI\Dashboard.lua
+UI\Minimap.lua
+Slash.lua
+Core.lua
