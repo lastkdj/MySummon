@@ -63,6 +63,7 @@ function GetTime() return M.clock end
 function time() return M.clock end
 date = os.date
 M.realprint = print
+math.randomseed = nil   -- WoW: Forever does not provide it; the addon must not depend on it
 function print(...)
     local t = {}
     for i = 1, select("#", ...) do t[#t + 1] = tostring((select(i, ...))) end

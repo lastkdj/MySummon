@@ -6,7 +6,7 @@ local U, API, G = SN.Util, SN.API, SN.Groups
 
 SN.version = (GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version"))
     or (C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON, "Version")) or "1.0.0"
-math.randomseed(time())
+if math.randomseed and time then pcall(math.randomseed, time()) end   -- not provided on every client
 
 ------------------------------------------------------------------------
 -- Logging and alerts
