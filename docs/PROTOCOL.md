@@ -13,8 +13,8 @@ last 128 values per sender and drop repeats. `mac` is the first 12 hex chars of 
 | `BK` | coordinator | id, v, cust, dest, owner, ack, state, ps, pay, price, got, recv, created, begun, done, msgs | all | Authoritative booking record |
 | `SYNC` | any | - | coordinator | Ask for config + all bookings (join / reload / coordinator change) |
 | `DST` | coordinator | key, name, price, zone, aliases(csv), enabled, order | all | Destination config |
-| `SETDST` | manager | same as DST | coordinator | Request a destination change (managers/leader only) |
-| `DELDST` / `SETDEL` | coordinator / manager | key | all / coordinator | Remove a destination |
+| `SETDST` | leader | same as DST | coordinator | Request a destination change (accepted only from the party/raid leader) |
+| `DELDST` / `SETDEL` | coordinator / leader | key | all / coordinator | Remove a destination |
 
 Acceptance rules: a `BK`/`DST` is accepted only from the node the receiver currently believes is coordinator (a higher-ranked
 sender triggers re-election first). Messages from non-members of the allow-list, with a wrong key, or with a bad checksum

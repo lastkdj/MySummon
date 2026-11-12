@@ -52,7 +52,7 @@ time. Timeouts use locally observed times (`sat`, `lseen`), never remote clocks.
   all Warlocks in one raid (or a shared guild). Messages are throttled (6/s, burst 10) in `Net.lua`.
 * **Membership:** every Warlock sends `HI` every 10 s (dest, status, soul shards, load). Silent for 35 s = offline.
 * **Coordinator election (no voting):** every node computes the same answer from the live member list:
-  `rank = manager-list position, else group leader, else name`. Lowest rank wins. Ties cannot occur (names are unique).
+  `rank = group leader first, then manager-list position, then name`. Lowest rank wins. Ties cannot occur (names are unique).
   The coordinator changes automatically when it goes silent or a better-ranked member joins.
 * **Requests:** non-coordinators send `NEW` (new customer) and `EVT` (state change). The coordinator validates
   authorisation and the state machine, bumps `v`, and broadcasts `BK`.
@@ -77,7 +77,8 @@ time. Timeouts use locally observed times (`sat`, `lseen`), never remote clocks.
   A party caps at 5, so the dashboard shows **To raid** for the leader. Raid cap is 40; the addon warns when full.
 * Summoning is serial per city: only the head of a destination queue is `ASSIGNED`; the rest are `WAITING`. Different
   cities summon in parallel. Teammates of the summoner are alerted to click the portal.
-* Group leadership: the raid leader or any listed manager can reassign, redirect, cancel and edit prices.
+* Group leadership: **only the party/raid leader can edit prices, aliases and destinations**. The leader or any listed
+  manager can also reassign, redirect, cancel and mark paid on behalf of a Warlock.
 
 ## 6. Security model
 

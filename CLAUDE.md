@@ -4,7 +4,7 @@ Read this before writing any code in this project.
 
 ## What we are building
 
-**Summon Network** is a free WoW addon (target client: "WoW: Forever", unverified) used by a network of Warlocks who sell
+**Summon Network** is a free WoW addon (target client: WoW: Forever 1.60.1, Interface 16001: modern engine with Midnight addon restrictions, so guard inbound chat with `issecretvalue`) used by a network of Warlocks who sell
 summons for **in-game gold/silver**. Customers need no addon: they whisper `inv <city>` and are routed to the right Warlock
 team. Warlocks coordinate through addon messages. There is no backend. Multi-city support is in version 1.
 
@@ -28,6 +28,7 @@ If a task would break one of these rules, stop and ask the user before continuin
 
 ## Technical conventions
 
+- Network configuration (prices, aliases, destinations) is editable only by the party/raid leader.
 - Lua 5.1 (WoW dialect). No `goto`, `//`, `continue`, bit operators.
 - Every WoW API is reached through `Compat.lua` (`SN.API`) or guarded; a missing function must degrade to a manual fallback.
   Never invent API behaviour: record it in `docs/API-NOTES.md` under "Unverified" until checked with `/sn diag` on the live client.

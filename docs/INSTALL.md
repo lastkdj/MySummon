@@ -4,8 +4,8 @@
 
 1. Copy the `SummonNetwork` folder (from `addon/`, or unzip the output of `tools/package.sh`) into
    `World of Warcraft/<client folder>/Interface/AddOns/`. The folder name must be exactly `SummonNetwork`.
-2. Start the game. If the addon shows as out of date, tick **Load out of date AddOns**, run `/sn diag`, and put the Interface
-   number it prints into `SummonNetwork.toc`.
+2. Start the game (the `.toc` targets WoW: Forever, Interface 16001). If the addon shows as out of date, tick **Load out of
+   date AddOns**, run `/sn diag`, and put the Interface number it prints into `SummonNetwork.toc`.
 3. Customers install nothing.
 
 ## First-time configuration (same on every Warlock)
@@ -20,8 +20,10 @@
 /sn available                  start taking customers
 ```
 
-Everything above is also available in the dashboard **Setup** tab. Destination prices, aliases and zone names are
-network configuration: the coordinator's copy wins, and only managers / the raid leader may change it.
+Everything above is also available in the dashboard **Setup** tab. Destination prices, aliases, zone names and the
+destination list are network configuration: **only the party/raid leader can change them**; the change is sent to every
+Warlock and the coordinator's copy wins. The party/raid leader is also preferred as coordinator. If leadership is passed to
+another Warlock, they take over configuration and coordination within about a minute.
 
 ## Forming the network
 

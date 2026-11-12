@@ -12,6 +12,6 @@ read_globals = {
   "CheckInteractDistance", "IsInGuild", "GetSpellInfo", "IsSpellKnown", "IsPlayerSpell", "IsUsableSpell", "GetItemCount",
   "GetMoney", "GetTargetTradeMoney", "GetPlayerTradeMoney", "PlaySound", "GetChannelList", "ChatFrame_OpenChat",
   "GetAddOnMetadata", "SendChatMessage", "InviteUnit", "ConvertToRaid", "UninviteUnit", "SendAddonMessage", "RegisterAddonMessagePrefix",
-  "C_ChatInfo", "C_PartyInfo", "C_Spell", "C_AddOns", "Settings", "STANDARD_TEXT_FONT", "GetCursorPosition", "TradeFrameRecipientNameText",
+  "issecretvalue", "C_SpellBook", "C_Item", "C_ChatInfo", "C_PartyInfo", "C_Spell", "C_AddOns", "Settings", "STANDARD_TEXT_FONT", "GetCursorPosition", "TradeFrameRecipientNameText",
   "ERR_TRADE_COMPLETE", "ERR_TRADE_CANCELLED", "ERR_BAD_PLAYER_NAME_S", "ERR_ALREADY_IN_GROUP_S", "ERR_DECLINE_GROUP_S", "ERR_GROUP_FULL",
 }

@@ -50,7 +50,11 @@ function SN.SetMyDest(key)
     return true
 end
 
-function SN.EditDest(d) SN.engine:EditDest(d) end
+function SN.EditDest(d)
+    local ok, why = SN.engine:EditDest(d)
+    if not ok then SN.Alert(tostring(why), "alert") end
+    return ok
+end
 
 function SN.SetKey(text)
     SN.db.key = text or ""
@@ -179,15 +183,17 @@ function handlers.PLAYER_LOGOUT()
 end
 
 function handlers.CHAT_MSG_ADDON(prefix, text, channel, sender)
+    if API.IsSecret(prefix, text, sender) then return end
     SN.Net.OnAddon(prefix, text, channel, sender)
 end
 
 function handlers.CHAT_MSG_WHISPER(text, sender)
+    if API.IsSecret(text, sender) then return end
     if SN.engine then SN.Whispers.OnWhisper(text, sender) end
 end
 
 function handlers.CHAT_MSG_SYSTEM(msg)
-    if not SN.engine then return end
+    if not SN.engine or API.IsSecret(msg) then return end
     SN.Whispers.OnSystem(msg)
     SN.Trade.OnMessage(msg)
 end
@@ -204,7 +210,7 @@ function handlers.TRADE_SHOW() if SN.engine then SN.Trade.OnShow() end end
 function handlers.TRADE_CLOSED() if SN.engine then SN.Trade.OnClosed() end end
 function handlers.TRADE_ACCEPT_UPDATE(a, b) if SN.engine then SN.Trade.OnAccept(a, b) end end
 function handlers.TRADE_MONEY_CHANGED() if SN.engine then SN.Trade.OnMoney() end end
-function handlers.UI_INFO_MESSAGE(...) if SN.engine then SN.Trade.OnMessage(...) end end
+function handlers.UI_INFO_MESSAGE(...) if SN.engine and not API.IsSecret(...) then SN.Trade.OnMessage(...) end end
 function handlers.PLAYER_MONEY() if SN.engine then SN.Trade.OnPlayerMoney() end end
 
 function handlers.UNIT_SPELLCAST_SUCCEEDED(unit, ...) if SN.engine then SN.Summon.OnCastSucceeded(unit, ...) end end

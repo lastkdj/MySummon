@@ -1,6 +1,6 @@
 # Summon Network
 
-A multi-city Warlock summoning network for World of Warcraft (target: **WoW: Forever**). Customers pay in-game gold/silver;
+A multi-city Warlock summoning network for World of Warcraft (target: **WoW: Forever**, client 1.60.1, Interface 16001). Customers pay in-game gold/silver;
 they need **no addon**. Warlocks install the addon and get a shared queue, automatic round-robin assignment, trade-based
 payment tracking, customer whispers, a Trade-chat ad builder and business statistics.
 
@@ -44,6 +44,6 @@ tools/package.sh         builds SummonNetwork-<version>.zip for distribution
 
 ```bash
 cd addon/SummonNetwork
-lua tests/run.lua     # 419 checks: protocol, state machine, 3/9/12-Warlock network simulation, headless UI smoke test
+lua tests/run.lua     # 426 checks: protocol, state machine, 3/9/12-Warlock network simulation, headless UI smoke test
 luacheck .
 ```

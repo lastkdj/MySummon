@@ -5,7 +5,7 @@
 ```bash
 cd addon/SummonNetwork && lua tests/run.lua && luacheck .
 ```
-419 checks cover: whisper parsing (`inv ogr`, `INV OGR`, `inv org`, `inv orgrimmar`, aliases), protocol/escaping/spoofing,
+426 checks cover: whisper parsing (`inv ogr`, `INV OGR`, `inv org`, `inv orgrimmar`, aliases), protocol/escaping/spoofing,
 every state transition, **3-, 9- and 12-Warlock network simulations** (round robin, duplicate whispers, routing across
 cities, coordinator fail-over, rejoin/SYNC, authorisation, wrong-key rejection, disconnect and no-show, partial payment,
 config replication, `/reload` restore) and a headless UI/glue smoke run against a WoW API mock (whisper -> invite ->
@@ -52,7 +52,8 @@ Record PASS/FAIL and evidence in `docs/PROGRESS.md`. A failed item has a fallbac
    per-Warlock/per-city revenue.
 4. Set one Orgrimmar Warlock `/sn busy`: new `inv ogr` skips them. Set the whole Thunder Bluff team `offline`: `inv tb`
    gets the "unavailable" whisper and `/sn ad` drops Thunder Bluff.
-5. Manager reassigns a customer (row menu -> Reassign) to another Warlock: only the new owner can collect payment.
+5. Only the raid leader can change a price or alias (Setup tab / `/sn price`): another Warlock gets a refusal.
+6. Leader or a listed manager reassigns a customer (row menu -> Reassign) to another Warlock: only the new owner can collect payment.
 
 ## D. 12 Warlocks, four cities (raid)
 

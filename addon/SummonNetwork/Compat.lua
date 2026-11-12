@@ -49,8 +49,19 @@ function API.UnitIsLeader(unit)
 end
 
 function API.Whisper(msg, name)
-    if not SendChatMessage then return false end
-    return (pcall(SendChatMessage, msg, "WHISPER", nil, name))
+    local f = SendChatMessage or (C_ChatInfo and C_ChatInfo.SendChatMessage)
+    if not f then return false end
+    return (pcall(f, msg, "WHISPER", nil, name))
+end
+
+-- Midnight-era clients hand addons "secret" values (e.g. chat during chat lockdown). Comparing or
+-- string-matching one raises an error, so every inbound text is checked first.
+function API.IsSecret(...)
+    if not issecretvalue then return false end
+    for i = 1, select("#", ...) do
+        if issecretvalue((select(i, ...))) then return true end
+    end
+    return false
 end
 
 -- Group invitation. May be protected/hardware-event-restricted on some clients; always pcall'd.
@@ -88,17 +99,15 @@ end
 
 function API.KnowsRitual()
     local name = API.RitualName()
+    if C_SpellBook and C_SpellBook.IsSpellKnown and C_SpellBook.IsSpellKnown(API.RITUAL_SPELL_ID) then return true, name end
     if IsSpellKnown and IsSpellKnown(API.RITUAL_SPELL_ID) then return true, name end
     if IsPlayerSpell and IsPlayerSpell(API.RITUAL_SPELL_ID) then return true, name end
-    if name and GetSpellInfo and GetSpellInfo(name) and IsUsableSpell then
-        local usable = IsUsableSpell(name)
-        if usable ~= nil then return true, name end
-    end
     return false, name
 end
 
 function API.Shards()
-    if GetItemCount then return GetItemCount(API.SOUL_SHARD_ITEM) or 0 end
+    local f = (C_Item and C_Item.GetItemCount) or GetItemCount
+    if f then return f(API.SOUL_SHARD_ITEM) or 0 end
     return 0
 end
 

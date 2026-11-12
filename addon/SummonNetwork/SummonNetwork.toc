@@ -1,4 +1,4 @@
-## Interface: 11507, 20504, 30403, 40402
+## Interface: 16001
 ## Title: |cff9be85aSummon|r |cffa366f5Network|r
 ## Notes: Multi-city Warlock summoning network: shared queues, assignments, trade tracking. Free; customers need no addon.
 ## Author: Ricardo

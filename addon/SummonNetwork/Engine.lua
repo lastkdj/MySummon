@@ -129,12 +129,23 @@ function E:Touch(name)
     return m
 end
 
+-- Coordinator preference: party/raid leader first, then listed managers (in order), then name.
 function E:Rank(name)
-    local idx = select(2, inList(self:C("managers"), name))
-    if idx then return string.format("0%03d%s", idx, name) end
     local gi = self.groupInfo()
-    if gi and gi.leader and U.lower(gi.leader) == U.lower(name) then return "1" .. name end
+    if gi and gi.leader and U.lower(gi.leader) == U.lower(name) then return "0" .. name end
+    local idx = select(2, inList(self:C("managers"), name))
+    if idx then return string.format("1%03d%s", idx, name) end
     return "2" .. name
+end
+
+-- Network configuration (prices, aliases, destinations) may only be changed by the party/raid
+-- leader. Outside a group only this Warlock (or a listed manager) may change its own copy.
+function E:CanConfig(name)
+    local gi = self.groupInfo()
+    if gi and gi.inGroup then
+        return gi.leader ~= nil and U.lower(gi.leader) == U.lower(name)
+    end
+    return name == self.name or inList(self:C("managers"), name)
 end
 
 function E:IsCoord() return self.coord == self.name end
@@ -307,19 +318,20 @@ end
 -- other Warlocks ask the coordinator (which checks authorisation).
 function E:EditDest(d)
     if not d.key or d.key == "" then return false, "no key" end
+    if not self:CanConfig(self.name) then return false, "only the party/raid leader can change prices and destinations" end
     if self:IsCoord() then
         self:applyDest(d)
         self:Send("DST", destFields(self.dests[d.key]))
         self:Emit("config")
         return true
     end
-    self:applyDest(d) -- optimistic local copy; the coordinator's DST is authoritative
-    self:Send("SETDST", destFields(d))
+    self:Send("SETDST", destFields(d)) -- the coordinator checks the leader and answers with DST
     self:Emit("config")
     return true
 end
 
 function E:RemoveDest(key)
+    if not self:CanConfig(self.name) then return false, "only the party/raid leader can change destinations" end
     if self:IsCoord() then
         self:removeDest(key)
         self:Send("DELDST", { key })
@@ -338,7 +350,7 @@ function E:removeDest(key)
 end
 
 function E:onSETDST(sender, f)
-    if self:IsCoord() and self:IsAuthorized(sender) then
+    if self:IsCoord() and self:CanConfig(sender) then
         local d = destFromFields(f)
         self:applyDest(d)
         self:Send("DST", destFields(self.dests[d.key]))
@@ -347,7 +359,7 @@ function E:onSETDST(sender, f)
 end
 
 function E:onSETDEL(sender, f)
-    if self:IsCoord() and self:IsAuthorized(sender) then
+    if self:IsCoord() and self:CanConfig(sender) then
         self:removeDest(f[1])
         self:Send("DELDST", { f[1] })
     end

@@ -16,8 +16,8 @@ patch notes about addon communication or combat restrictions).
 
 ## Things the project owners must decide / verify (not addressable in code)
 
-* Whether selling summons for in-game currency is permitted on the target realm/server. Do not use the addon for real-money trading.
-* Whether automated whisper replies are acceptable under the target server's rules (they can be disabled: Setup -> Whisper customers).
+* Owner decision (2026-11): selling summons for in-game gold/silver and automatic whisper replies are acceptable. Do not use the addon for real-money trading. Replies can be disabled: Setup -> Whisper customers.
+* Re-check Blizzard's Add-On Policy and the Forever addon-restriction notes before each release.
 * The addon is free; the Warlocks charge in-game prices themselves.
 
 ## Release checklist

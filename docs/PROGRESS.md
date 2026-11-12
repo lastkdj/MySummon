@@ -13,7 +13,7 @@
 | Ledger, analytics, SavedVariables, `/reload` recovery | Done |
 | Documentation + test checklists (3/9/12) | Done |
 
-Automated: `lua tests/run.lua` 419 checks pass; `luacheck .` clean.
+Automated: `lua tests/run.lua` 426 checks pass; `luacheck .` clean.
 
 ## Decisions
 
@@ -22,6 +22,7 @@ Automated: `lua tests/run.lua` 419 checks pass; `luacheck .` clean.
 * Teams are logical (shared `dest`), not raid subgroups, to avoid protected raid rearrangement.
 * Auto-invite defaults OFF (may be restricted); one-click Invite and chat-box prefill fallback.
 * Network authentication = shared key checksum + optional allow-list (not cryptographic).
+* 2026-11: Owner confirmed target = WoW: Forever (Interface 16001), gold-for-service and whisper replies acceptable, and network config editable only by the party/raid leader. The leader is now also the preferred coordinator.
 * Single coordinator, deterministic election, full replication on every client.
 
 ## Unverified (needs live client check): see API-NOTES.md
@@ -32,8 +33,8 @@ visual layout/fonts of the UI at different UI scales.
 
 ## Open questions for the owners
 
-1. Which client exactly is "WoW: Forever" (Classic Era, progression, private server)? Needed for the Interface number and API set.
-2. Are bots-replying-by-whisper and gold-for-service permitted on that server?
-3. Do you want prices/aliases editable by every Warlock, or only managers (current: managers/leader only)?
+1. ~~Which client is WoW: Forever?~~ Answered: the new official WoW: Forever client (1.60.1, Interface 16001, modern engine with Midnight addon restrictions).
+2. ~~Gold-for-service and whisper replies permitted?~~ Owner answer: yes.
+3. ~~Who edits prices/aliases?~~ Owner answer: party leader or raid leader only (implemented).
 4. Should finished customers be removed from the raid automatically (currently a manual menu action)?
 5. Localisation beyond English (customers may whisper in other languages: add aliases).

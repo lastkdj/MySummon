@@ -333,23 +333,31 @@ do
 end
 
 ------------------------------------------------------------------------
-L.section("Config changes replicate; persistence round trip")
+L.section("Config changes: only the party/raid leader, replicated to everyone")
 do
-    local net = L.newNet(SN, { managers = { "Alpha" } })
+    local net = L.newNet(SN)
+    net.leader = "Alpha"
     net:add("Alpha", "ogr"); net:add("Bravo", "ogr")
     net:tick(3)
-    net.nodes.Alpha:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 5000, aliases = { "org", "og" }, enabled = true, order = 1 })
+    L.eq(net.nodes.Bravo.coord, "Alpha", "leader coordinates")
+    L.check(net.nodes.Alpha:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 5000, aliases = { "org", "og" }, enabled = true, order = 1 }))
     net:pump()
-    L.eq(net.nodes.Bravo.dests.ogr.price, 5000, "price change replicated")
+    L.eq(net.nodes.Bravo.dests.ogr.price, 5000, "leader price change replicated")
     L.eq(net.nodes.Bravo.dests.ogr.aliases[2], "og")
-    net.nodes.Bravo:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 1, aliases = {}, enabled = true, order = 1 })
+    local ok = net.nodes.Bravo:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 1, aliases = {}, enabled = true, order = 1 })
+    L.check(not ok, "non-leader edit refused locally")
+    net.nodes.Bravo:Send("SETDST", { "ogr", "Orgrimmar", 1, "Orgrimmar", "", 1, 1 })   -- forged request
     net:pump()
-    L.eq(net.nodes.Alpha.dests.ogr.price, 5000, "unauthorised config edit rejected by coordinator")
-    net:tick(1); net.nodes.Alpha:SendConfig(); net:pump()
-    L.eq(net.nodes.Bravo.dests.ogr.price, 5000, "optimistic local edit is overwritten by the coordinator")
-    net.nodes.Alpha:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 4000, aliases = {}, enabled = true, order = 1 })
+    L.eq(net.nodes.Alpha.dests.ogr.price, 5000, "non-leader SETDST ignored by the coordinator")
+    L.check(not net.nodes.Bravo:RemoveDest("ogr"), "non-leader cannot remove destinations")
+    -- leadership moves: the new leader may edit, the old one may not
+    net.leader = "Bravo"
+    net:tick(40)
+    L.eq(net.nodes.Alpha.coord, "Bravo", "new leader becomes coordinator")
+    L.check(net.nodes.Bravo:EditDest({ key = "ogr", name = "Orgrimmar", zone = "Orgrimmar", price = 4000, aliases = {}, enabled = true, order = 1 }))
     net:pump()
-    L.eq(net.nodes.Bravo.dests.ogr.price, 4000, "manager edit replicated")
+    L.eq(net.nodes.Alpha.dests.ogr.price, 4000)
+    L.check(not net.nodes.Alpha:EditDest({ key = "ogr", name = "x", price = 1 }), "old leader refused")
     net.nodes.Bravo:Register("Z1", "ogr"); net:pump(); net:tick(2)
     L.eq(net.nodes.Alpha:Find("Z1").price, 4000, "price locked at booking time")
 

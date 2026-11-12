@@ -1,13 +1,20 @@
 # Client API restrictions, fallbacks and the UNVERIFIED list
 
-**Honesty first:** this repository was built without access to a WoW: Forever client. "WoW: Forever" has not been
-identified as Classic Era, a Classic progression server or a private server. Everything below marked **UNVERIFIED** is a
-design assumption that `/sn diag` and `docs/TESTING.md` section A must confirm in game. All client calls go through
+**Target client (identified from public sources, Nov 2026):** World of Warcraft: Forever, client **1.60.1, Interface 16001**
+(warcraft.wiki.gg TOC format page and several addon guides). It runs on the **modern client engine with Midnight's addon
+restrictions** ("Secret Values", chat/addon-message lockdown in instances and some combat situations). Everything this addon
+does happens in cities, outside the restricted situations, and every inbound chat/addon value is checked with
+`issecretvalue` before use. This repository was still built without access to the client, so everything marked
+**UNVERIFIED** below must be confirmed in game with `/sn diag` and `docs/TESTING.md` section A.
+
+Modern-client notes: removed/renamed globals are handled in `Compat.lua` (`C_Spell.GetSpellInfo`, `C_Item.GetItemCount`,
+`C_SpellBook.IsSpellKnown`, `C_AddOns.GetAddOnMetadata`, `C_ChatInfo.SendChatMessage`). Do not post or send addon
+messages from inside an instance or during an encounter/PvP match (the client blocks it); the addon does not try. All client calls go through
 `Compat.lua` / guarded `pcall`s so a wrong assumption degrades to a manual step instead of a Lua error.
 
 | # | Area | What the addon does | Status | Safe fallback if it fails |
 |---|---|---|---|---|
-| 1 | Interface number | `.toc` lists `11507, 20504, 30403, 40402` | UNVERIFIED | `/sn diag` prints the right number; edit the `.toc` |
+| 1 | Interface number | `.toc` uses `16001` | From public sources; confirm with `/sn diag` | `/sn diag` prints the real number; edit the `.toc` |
 | 2 | Addon messages (`RegisterAddonMessagePrefix`, `SendAddonMessage` on `RAID`/`PARTY`/`GUILD`, `CHAT_MSG_ADDON`) | Whole sync layer | UNVERIFIED (standard on all Classic clients) | Guild mode (`/sn channel guild`); solo mode still works |
 | 3 | Message throttle | Token bucket 6/s, burst 10 | Conservative guess | Lower `RATE` in `Net.lua` |
 | 4 | Incoming whispers (`CHAT_MSG_WHISPER`) | Customer detection | UNVERIFIED (standard) | none needed |
@@ -21,7 +28,7 @@ design assumption that `/sn diag` and `docs/TESTING.md` section A must confirm i
 | 12 | Secure button and combat | Attributes only set out of combat; re-armed on `PLAYER_REGEN_ENABLED` | Standard secure-template behaviour | Button shows "In combat" |
 | 13 | Trade events (`TRADE_SHOW`, `TRADE_ACCEPT_UPDATE`, `TRADE_MONEY_CHANGED`, `TRADE_CLOSED`), `GetTargetTradeMoney`, `UnitName("NPC")` for the partner, `ERR_TRADE_COMPLETE` | Paid only when: both sides accepted AND "Trade complete" message AND money actually received | UNVERIFIED | **Mark Paid** button / `/sn paid <name>` |
 | 14 | Arrival detection | Raid zone == city zone, or within trade distance (`CheckInteractDistance`), or a trade with the customer | UNVERIFIED | **Arrived** button |
-| 15 | Combat restrictions on addon messages / info | None expected on the intended workflow (everyone stands in cities) | UNVERIFIED for newer retail-style clients | Not applicable offline |
+| 15 | Midnight chat/addon-message lockdown (instances, encounters, M+, PvP) and Secret Values | Not triggered when everyone is in cities; inbound values guarded by `issecretvalue`; `UNIT_SPELLCAST_*` of the player are non-secret outside combat | Documented by Blizzard; confirm A1-A4 in a city | If you run the network inside an instance, messaging stops: stay in cities |
 | 16 | SavedVariables | `SummonNetworkDB`, `SummonNetworkCharDB`; `/reload` restores active bookings | Standard | n/a |
 | 17 | Trade channel number for the ad | `GetChannelList` match on "Trade" | UNVERIFIED | Ad text is printed to copy/paste |
 
