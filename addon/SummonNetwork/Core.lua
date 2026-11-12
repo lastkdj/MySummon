@@ -17,6 +17,16 @@ function SN.Log(msg)
 end
 function SN.DebugBuffer() return debugBuf end
 
+local shownErr = {}
+function SN.Fail(where, err)
+    local key = where .. tostring(err)
+    SN.Log(where .. " failed: " .. tostring(err))
+    if not shownErr[key] then
+        shownErr[key] = true
+        print("|cffff5555Summon Network error|r in " .. where .. ": " .. tostring(err))
+    end
+end
+
 function SN.Print(msg)
     print("|cff9be85aSummon Network:|r " .. tostring(msg))
 end
@@ -153,10 +163,14 @@ function handlers.PLAYER_LOGIN()
     SN.me = API.Player()
     SN.sessionStart = time()
     if not SN.db then SN.db, SN.cdb = SN.Config.Init() end
-    SN.Net.Init()
-    createEngine()
-    SN.UI.Init()
-    SN.Minimap.Init()
+    local ok, err = pcall(SN.Net.Init)
+    if not ok then SN.Fail("Net.Init", err) end
+    ok, err = pcall(createEngine)
+    if not ok then SN.Fail("createEngine", err) end
+    ok, err = pcall(SN.UI.Init)
+    if not ok then SN.Fail("UI.Init", err) end
+    ok, err = pcall(SN.Minimap.Init)
+    if not ok then SN.Fail("Minimap.Init", err) end
     if Settings and Settings.RegisterCanvasLayoutCategory and Settings.RegisterAddOnCategory then
         pcall(function()
             local panel = CreateFrame("Frame")
@@ -225,10 +239,7 @@ frame:SetScript("OnEvent", function(_, event, ...)
     local h = handlers[event]
     if h then
         local ok, err = pcall(h, ...)
-        if not ok then
-            SN.Log("event " .. event .. " failed: " .. tostring(err))
-            if SN.debug then SN.Print("error in " .. event .. ": " .. tostring(err)) end
-        end
+        if not ok then SN.Fail("event " .. event, err) end
     end
 end)
 
@@ -247,7 +258,7 @@ frame:SetScript("OnUpdate", function(_, el)
             SN.Whispers.Pump(now)
             SN.Trade.Tick(now)
         end)
-        if not ok then SN.Log("pump failed: " .. tostring(err)) end
+        if not ok then SN.Fail("pump", err) end
     end
     if acc2 >= 1 then
         acc2 = 0
@@ -255,7 +266,7 @@ frame:SetScript("OnUpdate", function(_, el)
             SN.engine:Tick()
             pushSelf()
         end)
-        if not ok then SN.Log("tick failed: " .. tostring(err)) end
+        if not ok then SN.Fail("tick", err) end
     end
     if acc3 >= 2 then
         acc3 = 0

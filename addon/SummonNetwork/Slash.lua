@@ -214,7 +214,7 @@ end
 
 local function handle(msg)
     msg = U.trim(msg or "")
-    if not SN.engine then say("Not ready yet.") return end
+    if not SN.engine then say("Not ready: the addon failed to start. Look above in chat for a red 'Summon Network error' line.") return end
     local a = words(msg)
     local cmd = U.lower(a[1] or "")
     if cmd == "" then SN.UI.Toggle() return end

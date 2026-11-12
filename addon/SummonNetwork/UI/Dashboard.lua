@@ -731,6 +731,10 @@ function UI.SetCompact(on)
 end
 
 function UI.Toggle()
+    if not main then
+        SN.Print("The window was not built (startup error). Look above in chat for a red 'Summon Network error' line.")
+        return
+    end
     if SN.cdb.compact then
         compact:SetShown(not compact:IsShown())
     else
@@ -766,8 +770,13 @@ local function nextLines()
 end
 
 function UI.Refresh()
-    if not main or not SN.engine then return end
     dirty, lastRefresh = false, GetTime()
+    local ok, err = pcall(UI.RefreshNow)
+    if not ok then SN.Fail("UI.Refresh", err) end
+end
+
+function UI.RefreshNow()
+    if not main or not SN.engine then return end
     local e = E()
     local counts = e:Counts()
     local members = e:LiveMembers()
