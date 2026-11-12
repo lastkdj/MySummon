@@ -208,6 +208,46 @@ function cmds.raid()
     say(ok and "Converting the party to a raid." or ("Cannot convert: " .. tostring(err)))
 end
 
+-- Copyable error report (local window; nothing is sent to other players)
+local errFrame
+function cmds.errors()
+    local Kit = SN.Kit
+    local lines = {}
+    for _, e in ipairs(SN.Errors()) do lines[#lines + 1] = e end
+    lines[#lines + 1] = "--- debug log ---"
+    local b = SN.DebugBuffer()
+    for i = math.max(1, #b - 30), #b do lines[#lines + 1] = b[i] end
+    local v, build, _, toc = API.BuildInfo()
+    lines[#lines + 1] = string.format("client %s build %s interface %s addon %s", tostring(v), tostring(build), tostring(toc), tostring(SN.version))
+    local text = table.concat(lines, "\n")
+    if not errFrame then
+        errFrame = Kit.Frame(UIParent, 520, 300, Kit.C.bg, Kit.C.purple, "SummonNetworkErrors")
+        errFrame:SetPoint("CENTER")
+        errFrame:SetFrameStrata("DIALOG")
+        local t = Kit.Text(errFrame, 12, Kit.C.gold, "LEFT", true)
+        t:SetPoint("TOPLEFT", 10, -8)
+        t:SetText("Press Ctrl+C to copy, then Esc to close")
+        local close = Kit.Button(errFrame, "X", 22, 20, function() errFrame:Hide() end, "danger")
+        close:SetPoint("TOPRIGHT", -6, -6)
+        local sf = CreateFrame("ScrollFrame", nil, errFrame)
+        sf:SetPoint("TOPLEFT", 10, -32)
+        sf:SetPoint("BOTTOMRIGHT", -10, 10)
+        local eb = CreateFrame("EditBox", nil, sf)
+        eb:SetMultiLine(true)
+        eb:SetFontObject(ChatFontNormal or GameFontHighlightSmall)
+        eb:SetWidth(496)
+        eb:SetAutoFocus(false)
+        eb:SetScript("OnEscapePressed", function() errFrame:Hide() end)
+        sf:SetScrollChild(eb)
+        errFrame.edit = eb
+        table.insert(UISpecialFrames, "SummonNetworkErrors")
+    end
+    errFrame.edit:SetText(text)
+    errFrame:Show()
+    errFrame.edit:SetFocus()
+    errFrame.edit:HighlightText()
+end
+
 function cmds.help()
     for _, l in ipairs(SN.L.HELP) do print(l) end
 end

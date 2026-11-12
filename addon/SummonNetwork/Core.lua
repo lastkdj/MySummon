@@ -17,13 +17,16 @@ function SN.Log(msg)
 end
 function SN.DebugBuffer() return debugBuf end
 
-local shownErr = {}
+local shownErr, errorList = {}, {}
+function SN.Errors() return errorList end
 function SN.Fail(where, err)
     local key = where .. tostring(err)
     SN.Log(where .. " failed: " .. tostring(err))
     if not shownErr[key] then
         shownErr[key] = true
-        print("|cffff5555Summon Network error|r in " .. where .. ": " .. tostring(err))
+        errorList[#errorList + 1] = date("%H:%M:%S ") .. where .. ": " .. tostring(err)
+        -- Local chat only (nobody else sees it): one short hint, details via /sn errors
+        print("|cffff5555Summon Network:|r a problem occurred. Type |cff9be85a/sn errors|r to copy the details.")
     end
 end
 

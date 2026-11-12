@@ -15,7 +15,7 @@ SN.L = {
     HELP = {
         "|cff9be85aSummon Network|r commands:",
         "  /sn  - open/close the dashboard      /sn compact - toggle compact mode",
-        "  /sn status | queue | stats | diag",
+        "  /sn status | queue | stats | diag | errors (copyable error report)",
         "  /sn available | busy | offline",
         "  /sn city <key>            set the destination you stand in",
         "  /sn price <key> <30s>     set a destination price",
