@@ -3,10 +3,10 @@ max_line_length = false
 exclude_files = { "tests/*" }
 ignore = { "212", "213", "311", "431", "432" }  -- unused args/loop vars, shadowing (WoW addon idiom)
 globals = {
-  "SummonNetworkDB", "SummonNetworkCharDB", "SlashCmdList", "SLASH_SUMMONNETWORK1", "SLASH_SUMMONNETWORK2", "UISpecialFrames",
+  "SummonNetworkDB", "SummonNetworkCharDB", "SlashCmdList", "SLASH_SUMMONNETWORK1", "SLASH_SUMMONNETWORK2", "SLASH_SUMMONNETWORK3", "SLASH_SUMNET1", "UISpecialFrames",
 }
 read_globals = {
-  "CreateFrame", "UIParent", "Minimap", "GameTooltip", "GetTime", "time", "date", "UnitName", "UnitClass", "UnitExists",
+  "geterrorhandler", "seterrorhandler", "GetAddOnInfo", "IsAddOnLoaded", "CreateFrame", "UIParent", "Minimap", "GameTooltip", "GetTime", "time", "date", "UnitName", "UnitClass", "UnitExists",
   "UnitIsConnected", "UnitIsDeadOrGhost", "UnitAffectingCombat", "InCombatLockdown", "GetBuildInfo", "IsInRaid", "IsInGroup",
   "GetNumGroupMembers", "GetNumRaidMembers", "GetNumPartyMembers", "GetRaidRosterInfo", "UnitIsGroupLeader", "UnitIsPartyLeader",
   "CheckInteractDistance", "IsInGuild", "GetSpellInfo", "IsSpellKnown", "IsPlayerSpell", "IsUsableSpell", "GetItemCount",

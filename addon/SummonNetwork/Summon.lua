@@ -4,6 +4,7 @@
 -- button (a hardware click). This file never calls CastSpellByName/TargetUnit or any other
 -- protected function from insecure code. Attributes are changed only out of combat.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Summon.lua" end
 SN = SN or {}
 local Q, API, G = SN.Queue, SN.API, SN.Groups
 local S = {}

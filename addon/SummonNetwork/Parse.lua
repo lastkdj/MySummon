@@ -1,6 +1,7 @@
 -- Parse.lua: customer whisper parsing (pure Lua).
 -- Recognises "inv ogr", "INV OGR", "inv orgrimmar", "invite uc please", etc.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Parse.lua" end
 SN = SN or {}
 local P = {}
 SN.Parse = P

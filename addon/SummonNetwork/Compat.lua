@@ -2,6 +2,7 @@
 -- renamed function on the target client degrades to a manual fallback instead of an error.
 -- Nothing in this file calls a protected function. See docs/API-NOTES.md.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Compat.lua" end
 SN = SN or {}
 local API = {}
 SN.API = API

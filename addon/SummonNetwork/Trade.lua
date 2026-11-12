@@ -2,6 +2,7 @@
 -- It reads the trade window the player opens, and marks a booking paid only when the trade
 -- really completed:  both sides accepted  +  "Trade complete" system message  +  money received.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Trade.lua" end
 SN = SN or {}
 local U, API = SN.Util, SN.API
 local T = {}

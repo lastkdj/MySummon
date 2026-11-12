@@ -1,5 +1,6 @@
 -- UI/Minimap.lua: draggable minimap button (no library dependency).
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "UI/Minimap.lua" end
 SN = SN or {}
 local Kit = SN.Kit
 local M = {}

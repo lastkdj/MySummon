@@ -1,6 +1,7 @@
 -- UI/Dashboard.lua: main dashboard (Queue / Cities / Stats / Ads / Setup) and compact mode.
 -- UI files never mutate bookings themselves: they call SN.engine:Do(...) and SN.* helpers.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "UI/Dashboard.lua" end
 SN = SN or {}
 local U, Q, Kit = SN.Util, SN.Queue, SN.Kit
 local C = Kit.C

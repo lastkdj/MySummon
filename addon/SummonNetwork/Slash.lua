@@ -1,5 +1,6 @@
 -- Slash.lua: /sn and /summonnetwork commands.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Slash.lua" end
 SN = SN or {}
 local U, Q, API = SN.Util, SN.Queue, SN.API
 local S = {}
@@ -271,6 +272,7 @@ end
 
 SLASH_SUMMONNETWORK1 = "/sn"
 SLASH_SUMMONNETWORK2 = "/summonnetwork"
+SLASH_SUMMONNETWORK3 = "/snet"
 SlashCmdList["SUMMONNETWORK"] = handle
 
 return S

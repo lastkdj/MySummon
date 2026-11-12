@@ -1,5 +1,6 @@
 -- Groups.lua: party/raid roster snapshot, invite permissions, customer arrival detection.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Groups.lua" end
 SN = SN or {}
 local U, API = SN.Util, SN.API
 local G = {}

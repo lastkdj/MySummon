@@ -3,6 +3,7 @@
 --   * throttles outgoing messages (token bucket, well under the client limits)
 --   * feeds CHAT_MSG_ADDON into Engine:Receive
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Net.lua" end
 SN = SN or {}
 local P, API = SN.Protocol, SN.API
 local Net = {}

@@ -1,5 +1,6 @@
 -- Locale/enUS.lua: all user-facing strings. Customer whispers are configurable (see Config.lua).
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Locale/enUS.lua" end
 SN = SN or {}
 SN.L = {
     TITLE = "SUMMON NETWORK",

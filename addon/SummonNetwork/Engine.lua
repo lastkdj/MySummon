@@ -8,6 +8,7 @@
 --   * deterministic fail-over (highest-ranked live member becomes coordinator)
 -- All I/O is injected so the engine can be simulated with many nodes in tests.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Engine.lua" end
 SN = SN or {}
 local U, Q, P = SN.Util, SN.Queue, SN.Protocol
 local E = {}

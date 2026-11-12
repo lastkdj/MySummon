@@ -1,5 +1,6 @@
 -- Core.lua: initialisation, event hub, shared helpers. Loaded last.
 local ADDON, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Core.lua" end
 SN = SN or {}
 local U, API, G = SN.Util, SN.API, SN.Groups
 

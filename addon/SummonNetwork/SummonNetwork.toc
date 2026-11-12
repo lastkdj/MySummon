@@ -8,6 +8,7 @@
 ## IconTexture: Interface\Icons\Spell_Shadow_Twilight
 ## X-Category: Economy
 
+Boot.lua
 Locale\enUS.lua
 Util.lua
 Parse.lua

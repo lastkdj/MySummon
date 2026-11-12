@@ -2,6 +2,7 @@
 --   SummonNetworkDB      account-wide: network settings, destinations, ledger
 --   SummonNetworkCharDB  per character: UI state, this Warlock's city/status, session snapshot
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Config.lua" end
 SN = SN or {}
 local U = SN.Util
 local C = {}

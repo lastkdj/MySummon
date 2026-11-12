@@ -7,6 +7,9 @@ M.fire("ADDON_LOADED", "SummonNetwork")
 M.fire("PLAYER_LOGIN")
 M.advance(3)
 L.check(SN.engine ~= nil, "engine created")
+L.eq(#SN.boot, SN.EXPECTED_FILES, "boot tracker saw every file: " .. table.concat(SN.boot, ","))
+L.check(SlashCmdList["SUMNET"] ~= nil, "/sumnet registered")
+SlashCmdList["SUMNET"]()
 L.eq(SN.me, "Shadowlock")
 SN.db.msgs.paid = SN.db.msgs.paid
 

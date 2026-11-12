@@ -3,6 +3,7 @@
 --   * sends configurable, de-duplicated, rate-limited status whispers
 --   * drives the group-invite step (one-click by default, optional auto-invite)
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Whispers.lua" end
 SN = SN or {}
 local U, Q, API, G, Parse = SN.Util, SN.Queue, SN.API, SN.Groups, SN.Parse
 local W = {}

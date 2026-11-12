@@ -1,5 +1,6 @@
 -- UI/Kit.lua: small widget toolkit with a dark "shadow & fel" look. No external libraries.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "UI/Kit.lua" end
 SN = SN or {}
 local Kit = {}
 SN.Kit = Kit

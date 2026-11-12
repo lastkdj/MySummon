@@ -2,6 +2,7 @@
 -- A ledger entry is the final booking record:
 --   { id, cust, dest, owner, state, pay, price, got, created, begun, done }
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Stats.lua" end
 SN = SN or {}
 local S = {}
 SN.Stats = S

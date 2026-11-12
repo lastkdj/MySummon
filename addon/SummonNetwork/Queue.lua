@@ -6,6 +6,7 @@
 --
 -- Q.Apply(booking, event, arg, now) mutates the booking and returns true, or false, reason.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Queue.lua" end
 SN = SN or {}
 local U = SN.Util
 local Q = {}

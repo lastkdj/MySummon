@@ -1,6 +1,7 @@
 -- Ads.lua: Trade-chat advertisement text builder (pure Lua).
 -- Posting is always a player action; this only builds the text.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Ads.lua" end
 SN = SN or {}
 local U = SN.Util
 local A = {}

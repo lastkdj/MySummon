@@ -1,5 +1,6 @@
 -- Util.lua: pure helpers (no WoW API). Testable with standalone Lua 5.1.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Util.lua" end
 SN = SN or {}
 local U = {}
 SN.Util = U

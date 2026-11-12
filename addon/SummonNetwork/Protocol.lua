@@ -3,6 +3,7 @@
 -- Fields are percent-escaped so they never contain "|", "%" or control characters.
 -- mac = first 12 hex chars of Hash(key, sender, body); "-" when no network key is set.
 local _, SN = ...
+if SN and SN.boot then SN.boot[#SN.boot + 1] = "Protocol.lua" end
 SN = SN or {}
 local U = SN.Util
 local P = {}
